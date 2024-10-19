@@ -1,6 +1,6 @@
 from main import get_ptt_boards, insert_ptt_board
 from models import Board
-
+from sqlalchemy import String
 
 def test_get_ptt_boards():
     expected = "Stock"

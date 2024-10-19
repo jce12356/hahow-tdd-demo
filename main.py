@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from sqlalchemy.orm import Session
+from sqlalchemy import String
 from models import Board
 from datetime import datetime
 
