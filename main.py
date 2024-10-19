@@ -1,16 +1,26 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import requests
+from bs4 import BeautifulSoup
+from sqlalchemy.orm import Session
+from models import Board
+from datetime import datetime
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def get_ptt_boards():
+    url = "https://www.ptt.cc/bbs/index.html"
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    resp = requests.get(url=url)
+    soup = BeautifulSoup(resp.text, "lxml")
+
+    result = []
+    for tmp in soup.find_all(name="div", attrs={"class": "board-name"}):
+        result.append(tmp.text)
+
+    return result
+
+
+def insert_ptt_board(name: str, session: Session):
+    board = Board(
+        name=name,
+        created_time=datetime.now()
+    )
+    session.add(board)
